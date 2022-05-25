@@ -1,0 +1,5 @@
+Flask
+watchdog
+python-dotenv
+gunicorn
+autopep8
