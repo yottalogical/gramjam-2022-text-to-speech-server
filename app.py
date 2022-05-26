@@ -8,14 +8,17 @@ import time
 app = flask.Flask(__name__)
 
 
-@app.route('/', methods=['POST'])
+@app.route('/text-to-speech', methods=['GET'])
 def index():
-    text = flask.request.get_data(as_text=True)
+    text = flask.request.args['text']
     filepath = text_to_speech(text)
 
-    time.sleep(0.05)
-
-    return flask.send_file(filepath)
+    return flask.send_file(
+        filepath,
+        as_attachment=True,
+        attachment_filename='speech.mp3',
+        mimetype='audio/mpeg'
+    )
 
 
 def text_to_speech(text: str) -> pathlib.Path:
@@ -27,5 +30,7 @@ def text_to_speech(text: str) -> pathlib.Path:
 
     engine.save_to_file(text, filepath)
     engine.runAndWait()
+
+    time.sleep(0.05)
 
     return filepath
