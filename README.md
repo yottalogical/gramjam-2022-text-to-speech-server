@@ -10,3 +10,10 @@
 | `README.md`        | Information about the repository                                |
 | `requirements.txt` | Python dependencies                                             |
 | `runtime.txt`      | Tells Heroku what version of Python to use                      |
+
+## Required Tools
+
+These need to be installed on your system for pyttsx3 to work.
+
+ * [eSpeak](http://espeak.sourceforge.net/)
+ * [FFmpeg](https://ffmpeg.org/)
