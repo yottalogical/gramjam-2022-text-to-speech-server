@@ -4,3 +4,4 @@ python-dotenv
 gunicorn
 autopep8
 pyttsx3
+gTTS
