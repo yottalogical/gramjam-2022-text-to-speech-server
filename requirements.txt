@@ -5,3 +5,4 @@ gunicorn
 autopep8
 pyttsx3
 gTTS
+boto3

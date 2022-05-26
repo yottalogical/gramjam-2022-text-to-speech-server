@@ -6,6 +6,8 @@ import pathlib
 import time
 import gtts
 import io
+import os
+import boto3
 
 app = flask.Flask(__name__)
 
@@ -42,3 +44,28 @@ def text_to_speech_gtts():
     tts.write_to_fp(audio)
 
     return audio.getvalue()
+
+
+session = boto3.Session(
+    aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'],
+    aws_secret_access_key=os.environ['AWS_SECRET_ACCESS_KEY'],
+    region_name='us-west-2'
+)
+
+polly = session.client('polly')
+
+
+@app.route('/text-to-speech/polly', methods=['GET'])
+def text_to_speech_polly():
+    response = polly.synthesize_speech(
+        Text=flask.request.args['text'],
+        OutputFormat='mp3',
+        VoiceId='Joanna'
+    )
+
+    return flask.send_file(
+        io.BytesIO(response['AudioStream'].read()),
+        as_attachment=True,
+        attachment_filename='speech.mp3',
+        mimetype='audio/mpeg'
+    )
