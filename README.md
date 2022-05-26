@@ -11,9 +11,26 @@
 | `requirements.txt` | Python dependencies                                             |
 | `runtime.txt`      | Tells Heroku what version of Python to use                      |
 
-## Required Tools
+## Server Setup
 
 These need to be installed on your system for pyttsx3 to work.
 
  * [eSpeak](http://espeak.sourceforge.net/)
  * [FFmpeg](https://ffmpeg.org/)
+
+Then install the Python dependancies:
+
+```sh
+pip3 install -r requirements.txt
+```
+
+Set the following environmental variables to the appropriate values:
+
+ * `AWS_ACCESS_KEY_ID`
+ * `AWS_SECRET_ACCESS_KEY`
+
+Finally run the server:
+
+```sh
+gunicorn app:app
+```
