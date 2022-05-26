@@ -34,3 +34,17 @@ Finally run the server:
 ```sh
 gunicorn app:app
 ```
+
+## Using the API
+
+Make an HTTP GET requests to one of the following endpoints:
+
+ * `/text-to-speech/espeak`
+ * `/text-to-speech/gtts`
+ * `/text-to-speech/polly`
+
+Use the query string key `text` for the text you want spoken. Example:
+
+```
+/text-to-speech/espeak?text=Hello+world!
+```
