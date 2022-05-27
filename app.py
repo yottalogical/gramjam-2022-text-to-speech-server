@@ -3,11 +3,11 @@ import pyttsx3
 import random
 import string
 import pathlib
-import time
 import gtts
 import io
 import os
 import boto3
+import inotify.adapters
 
 app = flask.Flask(__name__)
 
@@ -20,11 +20,11 @@ def text_to_speech_espeak():
                          for _ in range(32))
     filepath = pathlib.Path('/') / 'tmp' / f'gram-jam-server-{random_str}.mp3'
 
+    waiter = FileWaiter(filepath)
     engine: pyttsx3.Engine = pyttsx3.init()
     engine.save_to_file(text, filepath)
     engine.runAndWait()
-
-    time.sleep(0.05)
+    waiter.wait()
 
     return flask.send_file(
         filepath,
@@ -69,3 +69,16 @@ def text_to_speech_polly():
         attachment_filename='speech.mp3',
         mimetype='audio/mpeg'
     )
+
+
+class FileWaiter:
+    def __init__(self, filepath: pathlib.Path):
+        self.inotifier = inotify.adapters.Inotify()
+        self.inotifier.add_watch(str(filepath))
+
+    def wait(self):
+        for event in self.inotifier.event_gen(yield_nones=False):
+            _, event_types, _, _ = event
+
+            if 'IN_CLOSE_WRITE' in event_types:
+                return

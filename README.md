@@ -1,15 +1,16 @@
 ## Repository Structure
 
-| Path               | Purpose                                                         |
-| :----------------- | :-------------------------------------------------------------- |
-| `.env`             | Environmental variables for running locally                     |
-| `.flaskenv`        | Environmental variables for running locally in development mode |
-| `.gitignore`       | Files to be ignored by Git                                      |
-| `app.py`           | Flask app                                                       |
-| `Procfile`         | Tells Heroku what to run                                        |
-| `README.md`        | Information about the repository                                |
-| `requirements.txt` | Python dependencies                                             |
-| `runtime.txt`      | Tells Heroku what version of Python to use                      |
+| Path                    | Purpose                                                         |
+| :---------------------- | :-------------------------------------------------------------- |
+| `.env`                  | Environmental variables for running locally                     |
+| `.flaskenv`             | Environmental variables for running locally in development mode |
+| `.gitignore`            | Files to be ignored by Git                                      |
+| `app.py`                | Flask app                                                       |
+| `Procfile`              | Tells Heroku what to run                                        |
+| `README.md`             | Information about the repository                                |
+| `requirements.txt`      | Python dependencies                                             |
+| `sudo-requirements.txt` | Python dependencies that must be installed as root              |
+| `runtime.txt`           | Tells Heroku what version of Python to use                      |
 
 ## Server Setup
 
@@ -22,6 +23,7 @@ Then install the Python dependancies:
 
 ```sh
 pip3 install -r requirements.txt
+sudo pip3 install -r sudo-requirements.txt
 ```
 
 Set the following environmental variables to the appropriate values:
