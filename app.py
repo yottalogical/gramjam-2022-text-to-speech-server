@@ -43,7 +43,13 @@ def text_to_speech_gtts():
     tts = gtts.gTTS(text)
     tts.write_to_fp(audio)
 
-    return audio.getvalue()
+    audio.seek(0)
+    return flask.send_file(
+        audio,
+        as_attachment=True,
+        attachment_filename='speech.mp3',
+        mimetype='audio/mpeg'
+    )
 
 
 session = boto3.Session(
