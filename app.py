@@ -8,6 +8,7 @@ import io
 import os
 import boto3
 import inotify.adapters
+import hashlib
 
 app = flask.Flask(__name__)
 
@@ -16,15 +17,15 @@ app = flask.Flask(__name__)
 def text_to_speech_espeak():
     text = flask.request.args['text']
 
-    random_str = ''.join(random.choice(string.ascii_lowercase)
-                         for _ in range(32))
-    filepath = pathlib.Path('/') / 'tmp' / f'gram-jam-server-{random_str}.mp3'
+    text_digest = hashlib.sha256(text.encode()).hexdigest()
+    filepath = pathlib.Path('/') / 'tmp' / f'gram-jam-server-{text_digest}.mp3'
 
-    waiter = FileWaiter(filepath)
-    engine: pyttsx3.Engine = pyttsx3.init()
-    engine.save_to_file(text, filepath)
-    engine.runAndWait()
-    waiter.wait()
+    if not filepath.exists():
+        waiter = FileWaiter(filepath)
+        engine: pyttsx3.Engine = pyttsx3.init()
+        engine.save_to_file(text, filepath)
+        engine.runAndWait()
+        waiter.wait()
 
     return flask.send_file(
         filepath,
