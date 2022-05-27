@@ -79,12 +79,15 @@ def text_to_speech_polly():
 
 class FileWaiter:
     def __init__(self, filepath: pathlib.Path):
+        self.filepath = filepath
+
         self.inotifier = inotify.adapters.Inotify()
-        self.inotifier.add_watch(str(filepath))
+        self.inotifier.add_watch(str(filepath.parent))
 
     def wait(self):
         for event in self.inotifier.event_gen(yield_nones=False):
-            _, event_types, _, _ = event
+            _, event_types, event_path, event_filename = event
+            event_filepath = pathlib.Path(event_path) / event_filename
 
-            if 'IN_CLOSE_WRITE' in event_types:
+            if event_filepath == self.filepath and 'IN_CLOSE_WRITE' in event_types:
                 return
